@@ -54,11 +54,10 @@ train_labels.shape
 
 train_images.shape
 
-model.fit(data_generator.flow(train_images, train_labels), batch_size = 512,
-                              steps_per_epoch = len(train_images)/512,
-                              epochs = 15, verbose = 1)
+model.fit(data_generator.flow(train_images, train_labels), batch_size = 2048,
+                              epochs = 25, verbose = 1)
 
-loss = model.evaluate(data_generator.flow(test_images, test_labels), batch_size=512)
+loss = model.evaluate(data_generator.flow(test_images, test_labels), batch_size=2048)
 
 class_name= ["airplane", "automobile","bird","cat","deer","dog","frog","horse", "ship","truck"]
 
@@ -66,9 +65,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.preprocessing import image
 
-img = image.load_img("/content/dog.jpg", target_size=(32,32,3))
+img = image.load_img("cat.jpeg", target_size=(32,32,3))
 
-img = image.load_img("/content/download.jpeg", target_size=(32,32,3))
+#img = image.load_img("/content/download.jpeg", target_size=(32,32,3))
 
 img_array = image.img_to_array(img)
 img_array = img_array / 255
@@ -80,6 +79,19 @@ plt.imshow(img_array)
 prediction = model.predict(reshaped_img_array)
 
 predicted_value = class_name[np.argmax(prediction)]
+
+predicted_value
+
+#load and save model
+model.save('cnn_model.h5')
+
+import tensorflow as tf
+
+model2 = tf.keras.models.load_model("cnn_model.h5")
+
+prediction2 = model2.predict(reshaped_img_array)
+
+predicted_value = class_name[np.argmax(prediction2)]
 
 predicted_value
 
